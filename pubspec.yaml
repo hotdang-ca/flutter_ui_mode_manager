@@ -1,6 +1,6 @@
 name: flutter_ui_mode_manager
 description: A flutter plugin that helps to deffrentiate which platform a flutter application is running on, Phone, TV, Car, and so on
-version: 0.0.1
+version: 0.0.2
 author:
 homepage:
 
