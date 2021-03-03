@@ -19,7 +19,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   private lateinit var channel : MethodChannel
-  private lateinit var activity: Activity?
+  private var activity : Activity? = null
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_ui_mode_manager")
@@ -50,11 +50,11 @@ public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, Activ
 
   private fun getDeviceUiMode() : String {
     if (this.activity == null) {
-      return "not initialized."
-      // TODO: consider throwing
+      return "No initialized activity" // TODO: consider throwing
     }
 
-    val uiModeManager = this.activity.getSystemService(UI_MODE_SERVICE) as UiModeManager
+    val uiModeManager = this.activity?.getSystemService(UI_MODE_SERVICE) as UiModeManager
+
     if (uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION) {
       return "tv"
     } else if (uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_WATCH) {
@@ -83,7 +83,6 @@ public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, Activ
 
   override fun onDetachedFromActivityForConfigChanges() {
     this.activity = null
-    channel.setMethodCallHandler(null)
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -92,6 +91,5 @@ public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, Activ
 
   override fun onDetachedFromActivity() {
     this.activity = null
-    channel.setMethodCallHandler(null)
   }
 }
