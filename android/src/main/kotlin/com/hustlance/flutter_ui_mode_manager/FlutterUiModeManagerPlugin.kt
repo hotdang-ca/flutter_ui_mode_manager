@@ -49,6 +49,9 @@ public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, Activ
   }
 
   private fun getDeviceUiMode() : String {
+    if (this.activity == null) {
+      return "unattached.";
+    }
 
     val uiModeManager = this.activity.getSystemService(UI_MODE_SERVICE) as UiModeManager
     if (uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION) {
@@ -80,7 +83,7 @@ public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, Activ
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
-    TODO("Not yet implemented")
+    this.activity = null;
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -88,6 +91,6 @@ public class FlutterUiModeManagerPlugin: FlutterPlugin, MethodCallHandler, Activ
   }
 
   override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
+    this.activity = null;
   }
 }
